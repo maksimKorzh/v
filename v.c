@@ -48,14 +48,20 @@ int main(int argc, char **argv) {
         if (c == 0 || c == b[r].size()-1 || r == 0 || r == b.size()-1) cnt = "";
       }
     } else if (mod == "i") {
-      if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
-      else if (ch == '\n') {
-        vector<int> right(b[r].size() - c);
+      if (ch == '\n') {
+        vector<int> right(b[r].size() - c); vector<int> left(c);
         copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
-        vector<int> left(c); copy(b[r].begin(), b[r].begin() + c, left.begin());
-        b[r].clear(); b[r] = left; r++; c = 0; b.insert(b.begin() + r, right);
-        left.clear(); right.clear();
-      }
+        copy(b[r].begin(), b[r].begin() + c, left.begin()); b[r].clear();
+        b[r] = left; r++; c = 0; b.insert(b.begin() + r, right); left.clear(); right.clear();
+      } else if (ch == KEY_BACKSPACE || ch == '\b' || ch == 127) {
+        if (c) { c--; b[r].erase(b[r].begin() + c); }
+        else if (r) {
+          vector<int> right(b[r].size() - c); vector<int> left(c);
+          copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
+          copy(b[r].begin(), b[r].begin() + c, left.begin()); b.erase(b.begin() + r);
+          r--; c = b[r].size(); b[r].insert(b[r].end(), right.begin(), right.end());
+        }
+      } else if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
     }
     
     if (ch == KEY_RESIZE) { getmaxyx(stdscr, R, C); R--; r = c = 0; refresh(); }
