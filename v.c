@@ -23,9 +23,9 @@ int main(int argc, char **argv) {
     if (r < y) y = r; if (r >= y + R) y = r - R+1;
     if (c < x) x = c; if (c >= x + C) x = c - C+1;
     move(0, 0); for (int row = 0; row < R; row++) {
-    int brw = row + y; for (int col = 0; col < C; col++) {
-    int bcl = col + x; if (brw < b.size() && bcl < b[brw].size())
-    addch(b[brw][bcl]); } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
+      int brw = row + y; for (int col = 0; col < C; col++) { int bcl = col + x;
+      if (brw < b.size() && bcl < b[brw].size()) mvaddch(row, col, b[brw][bcl]); 
+    } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
     stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
     stat += b.size() ? " --" + to_string((int)((r+1)*100/b.size())) + "%-- " : "";
     stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "0") + "--";
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     if (isdigit(ch) && !(modes.find(mod[0]) != string::npos)) cnt += ch;
     if (ch == ('[' & 0x1f)) { if (c) c--; mod = 'n'; cnt = ""; continue; }
     int times = atoi(cnt.c_str()); if (mod == "n") {
-           if (ch == 'i') { mod = "i"; continue; }
+           if (ch == 'i') { mod = "i"; if (c >= b[r].size()) c = 0; continue; }
       else if (ch == 'o') { vector<int> row; b.insert(b.begin() + r+1, row); r++; c = 0; mod = "i"; }
       else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); c = 0; mod = "i"; }
       else if (ch == 'a') { mod = "i"; c++; }
