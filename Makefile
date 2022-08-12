@@ -1,3 +1,3 @@
 all:
-	g++ -Ofast v.c -o v -l ncurses
+	g++ -Ofast v.cpp -o v -l ncurses
 
