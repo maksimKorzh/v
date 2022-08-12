@@ -46,15 +46,10 @@ int main(int argc, char **argv) {
       else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
       else if (ch == ' ' || ch == 127) {
         for (int i = 0; i < (cnt.length() ? times : 1); i++) {
-          if (r+i < b.size()) {
-            if (ch == ' ' && c < b[r+i].size()) b[r+i].insert(b[r+i].begin() + c, 32);
-            else if (ch == 127 && c && c < b[r+i].size()) b[r+i].erase(b[r+i].begin() + c);
-          }
-        }
-      if (ch == ' ') c++;
-      else if (c) c--;
-      }
-      else if (ch == 'q') break; else if (ch == 'w') {
+          if (r+i < b.size()) { if (ch == ' ' && c < b[r+i].size()) b[r+i].insert(b[r+i].begin() + c, 32);
+          else if (ch == 127 && c && c < b[r+i].size()) b[r+i].erase(b[r+i].begin() + c-1); }}
+        if (ch == ' ') c++; else if (c) c--;
+      } else if (ch == 'q') break; else if (ch == 'w') {
         ofstream ofs(src, ofstream::out); string cont = "";
         for (int row = 0; row < b.size(); row++) {
           for (int col = 0; col < b[row].size(); col++) {
