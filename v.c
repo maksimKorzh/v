@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
         msg = to_string(b.size()) + " line(s) written to " + "\"" + src + "\""; 
       } else {
         switch (ch) {
+          case 'x': if (b[r].size()) b[r].erase(b[r].begin() + c); break;
           case 'h': c ? c-- : c; break;
           case 'j': r < b.size()-1 ? r++ : r; break;
           case 'k': r ? r-- : r; break;
