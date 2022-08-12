@@ -41,8 +41,7 @@ int main(int argc, char **argv) {
       else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); c = 0; mod = "i"; }
       else if (ch == 'a') { mod = "i"; c++; }
       else if (ch == 'A') { mod = "i"; c = b[r].size(); }
-      else if (ch == 'r') { mod = "r"; }
-      else if (ch == 'R') { mod = "R"; }
+      else if (ch == 'r') { mod = "r"; } else if (ch == 'R') { mod = "R"; }
       else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
       else if (ch =='p' and bf.size()) { for (int i = 0; i < bf.size(); i++) {
       b.insert(b.begin() + r+i+1, bf[i]); } r += bf.size(); }
