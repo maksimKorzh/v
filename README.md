@@ -21,7 +21,7 @@ Tiny vi-like text editor in only 100 lines of C++ code!
     can type ":". Since the navigation is limited "w" is used to write
     bytes to the file and "q" allows to exit. There's no check for modified
     flag so "q" would exit forcingly. Also count behaves differently - it's
-    only supported for yanking/deleting and a few more tricky features.
+    only supported for yanking/deleting.
 
 # Commands
     v file.txt          opens file, if no file specified it saves to "noname.txt"
@@ -41,8 +41,6 @@ Tiny vi-like text editor in only 100 lines of C++ code!
     [count]             when count is specified it works like autoindent
     [count] SPACE       insert spaces into [count] lines 
     [count] BACKSPACE   remove chars from [count] lines
-    [count] insert      insert chars into [count] lines
-    [count] delete      remove chars from [count] lines
  
     w                   write current file to disk
     q                   force quit
