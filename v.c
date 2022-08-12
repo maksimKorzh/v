@@ -14,17 +14,24 @@ int main(int argc, char **argv) {
   if (argc == 2) src = argv[1]; else b.push_back(row);
   try { vector<int> row;
     ifstream ifs(src); string cont((istreambuf_iterator<char>(ifs)),
-    (istreambuf_iterator<char>())); for (int i = 0; i < cont.size(); i++) {
-    if (cont[i] == '\n') { b.push_back(row); row.clear(); }
-    else row.push_back(cont[i]); ifs.close(); }} catch (exception &e) {}
-  if (src != "noname.txt") b.push_back(row);
+    (istreambuf_iterator<char>()));
+    
+    for (int i = 0; i < cont.size(); i++) {
+      if (cont[i] == '\n') { b.push_back(row); row.clear(); }
+      else row.push_back(cont[i]); 
+    }
+    if (row.size()) b.push_back(row);
+  ifs.close(); 
+  } catch (exception &e) {}
+    
+  if (src != "noname.txt" && b.size() == 0) b.push_back(row);
   while (TRUE) {
     if (r < y) y = r; if (r >= y + R) y = r - R+1;
     if (c < x) x = c; if (c >= x + C) x = c - C+1;
     move(0, 0); for (int row = 0; row < R; row++) {
     int brw = row + y; for (int col = 0; col < C; col++) {
     int bcl = col + x; if (brw < b.size() && bcl < b[brw].size())
-    addch(b[brw][bcl]); } clrtoeol(); addstr(brw < b.size() ? "\n" : "\n~"); }
+    addch(b[brw][bcl]); } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
     string stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
     stat += b.size() ? " --" + to_string((int)((r+1)*100/b.size())) + "%-- " : "";
     stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "1") + "--";

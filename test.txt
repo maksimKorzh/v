@@ -1,2 +1,1 @@
-xxx
-xxx
+line 1, no new line
