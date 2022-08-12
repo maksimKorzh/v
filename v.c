@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 int R, C, r, c, y, x, com;
-string src = "noname.txt", mod = "n", cnt = "";
+string src = "noname.txt", stat = "", msg = "", mod = "n", cnt = "";
 vector<vector<int>> b = {};
 int main(int argc, char **argv) {
   initscr(); nodelay(stdscr, TRUE); noecho(); raw(); 
@@ -14,14 +14,9 @@ int main(int argc, char **argv) {
   if (argc == 2) src = argv[1]; else b.push_back(row);
   try { vector<int> row;
     ifstream ifs(src); string cont((istreambuf_iterator<char>(ifs)),
-    (istreambuf_iterator<char>()));
-    
-    for (int i = 0; i < cont.size(); i++) {
-      if (cont[i] == '\n') { b.push_back(row); row.clear(); }
-      else row.push_back(cont[i]); 
-    }
-    if (row.size()) b.push_back(row);
-  ifs.close(); 
+    (istreambuf_iterator<char>())); for (int i = 0; i < cont.size(); i++) {
+    if (cont[i] == '\n') { b.push_back(row); row.clear(); }
+    else row.push_back(cont[i]); } if (row.size()) b.push_back(row); ifs.close(); 
   } catch (exception &e) {}
     
   if (src != "noname.txt" && b.size() == 0) b.push_back(row);
@@ -32,38 +27,32 @@ int main(int argc, char **argv) {
     int brw = row + y; for (int col = 0; col < C; col++) {
     int bcl = col + x; if (brw < b.size() && bcl < b[brw].size())
     addch(b[brw][bcl]); } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
-    string stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
+    stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
     stat += b.size() ? " --" + to_string((int)((r+1)*100/b.size())) + "%-- " : "";
     stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "1") + "--";
-    move(R, 0); for (int i = 0; i < stat.length(); i++) addch(stat[i]);
+    move(R, 0); if (msg == "") for (int i = 0; i < stat.length(); i++) addch(stat[i]);
+    else { for (int i = 0; i < msg.length(); i++) addch(msg[i]); msg = ""; }
     clrtoeol(); curs_set(0); move(r - y, c - x); curs_set(1); refresh();
     int ch = -1; while (ch == -1) ch = getch(); string modes = "irR";
     if (isdigit(ch) && !(modes.find(mod[0]) != string::npos)) cnt += ch;
-    if (ch == ('[' & 0x1f)) { mod = 'n'; cnt = ""; continue; } int times = atoi(cnt.c_str());
-    if (mod == "n") {
+    if (ch == ('[' & 0x1f)) { if (mod == "i" && c) c--; mod = 'n'; cnt = ""; continue; }
+    int times = atoi(cnt.c_str()); if (mod == "n") {
       if (ch == 'i') { mod = "i"; continue; }
+      else if (ch == 'A') { mod = "i"; c = b[r].size(); continue; }
       else if (ch == 'q') break; else if (ch == 'w') {
         ofstream ofs(src, ofstream::out); string cont = "";
         for (int row = 0; row < b.size(); row++) {
-         // if (b[row].size()) {
-            for (int col = 0; col < b[row].size(); col++) {
-              char c = b[row][col];
-              if (c) cont += c;
-            } cont += "\n";
-        //  }
-        //  else cont += "\n";
-        }
-        ofs << cont;
-        ofs.close();
+          for (int col = 0; col < b[row].size(); col++) {
+            char c = b[row][col]; if (c) cont += c;
+          } cont += "\n"; } ofs << cont; ofs.close();
+        msg = to_string(b.size()) + " line(s) written to " + "\"" + src + "\""; 
       } else {
         switch (ch) {
           case 'h': c ? c-- : c; break;
           case 'j': r < b.size()-1 ? r++ : r; break;
           case 'k': r ? r-- : r; break;
           case 'l': c < b[r].size()-1 ? c++ : c; break;
-        }
-        int rwl = r < b.size() ? b[r].size() : 0; if (c > rwl -1) c = rwl ? rwl-1 : rwl;
-        if (c == 0 || c == b[r].size()-1 || r == 0 || r == b.size()-1) cnt = "";
+        } int rwl = r < b.size() ? b[r].size() : 0; if (c > rwl -1) c = rwl ? rwl-1 : rwl;
       }
     } else if (mod == "i") {
       if (ch == '\n') {
@@ -87,5 +76,6 @@ int main(int argc, char **argv) {
   }
   endwin();
   b.clear();
+  int clear = system("clear");
   return 0;
 }
