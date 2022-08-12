@@ -45,12 +45,13 @@ int main(int argc, char **argv) {
       else if (ch == 'q') break; else if (ch == 'w') {
         ofstream ofs(src, ofstream::out); string cont = "";
         for (int row = 0; row < b.size(); row++) {
-          string line = "";
-          for (int col = 0; col < b[r].size(); col++) {
-            char c = b[row][col];
-            line += "x";
-          }
-          cont += line + "\n";
+         // if (b[row].size()) {
+            for (int col = 0; col < b[row].size(); col++) {
+              char c = b[row][col];
+              if (c) cont += c;
+            } cont += "\n";
+        //  }
+        //  else cont += "\n";
         }
         ofs << cont;
         ofs.close();
