@@ -10,14 +10,14 @@ string src = "noname.txt", mod = "n", cnt = "";
 vector<vector<int>> b = {};
 int main(int argc, char **argv) {
   initscr(); nodelay(stdscr, TRUE); noecho(); raw(); 
-  getmaxyx(stdscr, R, C); R--;
-  if (argc == 2) src = argv[1];
+  getmaxyx(stdscr, R, C); R--; vector<int> row;
+  if (argc == 2) src = argv[1]; else b.push_back(row);
   try { vector<int> row;
     ifstream ifs(src); string cont((istreambuf_iterator<char>(ifs)),
     (istreambuf_iterator<char>())); for (int i = 0; i < cont.size(); i++) {
     if (cont[i] == '\n') { b.push_back(row); row.clear(); }
-    else row.push_back(cont[i]); }
-  } catch (exception &e) {}
+    else row.push_back(cont[i]); ifs.close(); }} catch (exception &e) {}
+  if (src != "noname.txt") b.push_back(row);
   while (TRUE) {
     if (r < y) y = r; if (r >= y + R) y = r - R+1;
     if (c < x) x = c; if (c >= x + C) x = c - C+1;
@@ -35,16 +35,26 @@ int main(int argc, char **argv) {
     if (ch == ('[' & 0x1f)) { mod = 'n'; cnt = ""; continue; } int times = atoi(cnt.c_str());
     if (mod == "n") {
       if (ch == 'i') { mod = "i"; continue; }
-      if (ch == 'q') break;
-      else {
-        for (int i = 0; i < (cnt.length() ? times : 1); i++) {
-          switch (ch) {
-            case 'h': c ? c-- : c; break;
-            case 'j': r < b.size()-1 ? r++ : r; break;
-            case 'k': r ? r-- : r; break;
-            case 'l': c < b[r].size()-1 ? c++ : c; break;
+      else if (ch == 'q') break; else if (ch == 'w') {
+        ofstream ofs(src, ofstream::out); string cont = "";
+        for (int row = 0; row < b.size(); row++) {
+          string line = "";
+          for (int col = 0; col < b[r].size(); col++) {
+            char c = b[row][col];
+            line += "x";
           }
-        } int rwl = r < b.size() ? b[r].size() : 0; if (c > rwl -1) c = rwl ? rwl-1 : rwl;
+          cont += line + "\n";
+        }
+        ofs << cont;
+        ofs.close();
+      } else {
+        switch (ch) {
+          case 'h': c ? c-- : c; break;
+          case 'j': r < b.size()-1 ? r++ : r; break;
+          case 'k': r ? r-- : r; break;
+          case 'l': c < b[r].size()-1 ? c++ : c; break;
+        }
+        int rwl = r < b.size() ? b[r].size() : 0; if (c > rwl -1) c = rwl ? rwl-1 : rwl;
         if (c == 0 || c == b[r].size()-1 || r == 0 || r == b.size()-1) cnt = "";
       }
     } else if (mod == "i") {
@@ -60,6 +70,7 @@ int main(int argc, char **argv) {
           copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
           copy(b[r].begin(), b[r].begin() + c, left.begin()); b.erase(b.begin() + r);
           r--; c = b[r].size(); b[r].insert(b[r].end(), right.begin(), right.end());
+          left.clear(); right.clear();
         }
       } else if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
     }
