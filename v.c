@@ -34,9 +34,11 @@ int main(int argc, char **argv) {
     clrtoeol(); curs_set(0); move(r - y, c - x); curs_set(1); refresh();
     int ch = -1; while (ch == -1) ch = getch(); string modes = "irR";
     if (isdigit(ch) && !(modes.find(mod[0]) != string::npos)) cnt += ch;
-    if (ch == ('[' & 0x1f)) { if (mod[0] != string::npos && c) c--; mod = 'n'; cnt = ""; continue; }
+    if (ch == ('[' & 0x1f)) { if (c) c--; mod = 'n'; cnt = ""; continue; }
     int times = atoi(cnt.c_str()); if (mod == "n") {
-      if (ch == 'i') { mod = "i"; continue; }
+           if (ch == 'i') { mod = "i"; continue; }
+      else if (ch == 'o') { vector<int> row; b.insert(b.begin() + r+1, row); r++; mod = "i"; }
+      else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); mod = "i"; }
       else if (ch == 'a') { mod = "i"; c++; }
       else if (ch == 'A') { mod = "i"; c = b[r].size(); }
       else if (ch == 'r') { mod = "r"; }
@@ -51,6 +53,8 @@ int main(int argc, char **argv) {
         msg = to_string(b.size()) + " line(s) written to " + "\"" + src + "\""; 
       } else {
         switch (ch) {
+          case '#': c = 0; break;
+          case '$': c = b[r].size(); break;
           case 'x': if (b[r].size()) b[r].erase(b[r].begin() + c); break;
           case 'h': c ? c-- : c; break;
           case 'j': r < b.size()-1 ? r++ : r; break;
