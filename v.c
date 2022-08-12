@@ -18,7 +18,6 @@ int main(int argc, char **argv) {
     if (cont[i] == '\n') { b.push_back(row); row.clear(); }
     else row.push_back(cont[i]); } if (row.size()) b.push_back(row); ifs.close(); 
   } catch (exception &e) {}
-    
   if (src != "noname.txt" && b.size() == 0) b.push_back(row);
   while (TRUE) {
     if (r < y) y = r; if (r >= y + R) y = r - R+1;
@@ -29,7 +28,7 @@ int main(int argc, char **argv) {
     addch(b[brw][bcl]); } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
     stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
     stat += b.size() ? " --" + to_string((int)((r+1)*100/b.size())) + "%-- " : "";
-    stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "1") + "--";
+    stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "0") + "--";
     move(R, 0); if (msg == "") for (int i = 0; i < stat.length(); i++) addch(stat[i]);
     else { for (int i = 0; i < msg.length(); i++) addch(msg[i]); msg = ""; }
     clrtoeol(); curs_set(0); move(r - y, c - x); curs_set(1); refresh();
@@ -38,7 +37,9 @@ int main(int argc, char **argv) {
     if (ch == ('[' & 0x1f)) { if (mod == "i" && c) c--; mod = 'n'; cnt = ""; continue; }
     int times = atoi(cnt.c_str()); if (mod == "n") {
       if (ch == 'i') { mod = "i"; continue; }
-      else if (ch == 'A') { mod = "i"; c = b[r].size(); continue; }
+      else if (ch == 'a') { mod = "i"; c++; }
+      else if (ch == 'A') { mod = "i"; c = b[r].size(); }
+      else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
       else if (ch == 'q') break; else if (ch == 'w') {
         ofstream ofs(src, ofstream::out); string cont = "";
         for (int row = 0; row < b.size(); row++) {
@@ -53,7 +54,7 @@ int main(int argc, char **argv) {
           case 'k': r ? r-- : r; break;
           case 'l': c < b[r].size()-1 ? c++ : c; break;
         } int rwl = r < b.size() ? b[r].size() : 0; if (c > rwl -1) c = rwl ? rwl-1 : rwl;
-      }
+      } continue;
     } else if (mod == "i") {
       if (ch == '\n') {
         vector<int> right(b[r].size() - c); vector<int> left(c);
