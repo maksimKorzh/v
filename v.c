@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     } clrtoeol(); addstr(brw < b.size()-1 ? "\n" : "\n~"); }
     stat = mod + " \"" + src + "\" " + to_string(r+1) + "/" + to_string(b.size());
     stat += b.size() ? " --" + to_string((int)((r+1)*100/b.size())) + "%-- " : "";
-    stat += "col " + to_string(c+1) + " --x" + (cnt.length() ? cnt : "0") + "--";
+    stat += "col " + to_string(c+1) + " --count " + (cnt.length() ? cnt : "0") + "--";
     move(R, 0); if (msg == "") for (int i = 0; i < stat.length(); i++) addch(stat[i]);
     else { for (int i = 0; i < msg.length(); i++) addch(msg[i]); msg = ""; }
     clrtoeol(); curs_set(0); move(r - y, c - x); curs_set(1); refresh();
