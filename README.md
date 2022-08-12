@@ -1,13 +1,13 @@
-# v
+# V
 Tiny vi-like text editor in only 100 lines of C++ code!
 
 # Whi did I make it?
     I've been suffering from redundancy throughout my life.
     When it comes to text editors I really like vi-like ones,
-    however there's a wole lot of issues with those existing out
+    however there's a whole lot of issues with those existing out
     there. For instance VIM is perfect but needs time and effort
     for customization (mostly turning things off as I use only
-    maybe 10% of what it's ca[able of). On the other hands VI is    
+    maybe 10% of what it's capable of). On the other hands VI is    
     another option but there's no such a version I loved - busybox VI
     is something I've been using on a daily basis but sometimes it's
     buggy (like when do multiple undos). So eventually I decided to make
@@ -32,7 +32,7 @@ Tiny vi-like text editor in only 100 lines of C++ code!
 
     h, j, k, l          works like in VI/VIM but without count (arrow keys are not supported)
     i, a, A, o, O       works like in VI/VIM
-    x, r, R             works like in VI/VIM
+    x, r, R, G          works like in VI/VIM
     y, d, p             works like in VI/VIM but only linewise
     
     #                   equal to HOME
