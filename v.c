@@ -48,10 +48,9 @@ int main(int argc, char **argv) {
       b.insert(b.begin() + r+i+1, bf[i]); } r += bf.size(); }
       else if (ch == 'y' || ch == 'd') {
         bf.clear(); for (int i = 0; i < (cnt.length() ? times : 1); i++) {
-          if (r+i < b.size()) { vector<int> row; for (int j = 0; j < b[r+i].size(); j++) {
-          row.insert(row.begin() + j, b[r+i][j]); } bf.push_back(row);
-          }
-        }
+        if (r+i < b.size()) { vector<int> row; for (int j = 0; j < b[r+i].size(); j++) {
+        row.insert(row.begin() + j, b[r+i][j]); } bf.push_back(row);
+        if (ch == 'd') b.erase(b.begin() + r + i); }} cnt = "";
       } else if (ch == ' ' || ch == 127) {
         for (int i = 0; i < (cnt.length() ? times : 1); i++) {
           if (r+i < b.size()) { if (ch == ' ' && c < b[r+i].size()) b[r+i].insert(b[r+i].begin() + c, 32);
