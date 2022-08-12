@@ -39,6 +39,8 @@ int main(int argc, char **argv) {
       if (ch == 'i') { mod = "i"; continue; }
       else if (ch == 'a') { mod = "i"; c++; }
       else if (ch == 'A') { mod = "i"; c = b[r].size(); }
+      else if (ch == 'r') { mod = "r"; }
+      else if (ch == 'R') { mod = "R"; }
       else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
       else if (ch == 'q') break; else if (ch == 'w') {
         ofstream ofs(src, ofstream::out); string cont = "";
@@ -72,7 +74,7 @@ int main(int argc, char **argv) {
           left.clear(); right.clear();
         }
       } else if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
-    }
+    } else if (mod == "r") { b[r][c] = ch; mod = "n"; }
     
     if (ch == KEY_RESIZE) { getmaxyx(stdscr, R, C); R--; r = c = 0; refresh(); }
   }
