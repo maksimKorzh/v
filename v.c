@@ -41,8 +41,9 @@ int main(int argc, char **argv) {
       else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); c = 0; mod = "i"; }
       else if (ch == 'a') { mod = "i"; c++; }
       else if (ch == 'A') { mod = "i"; c = b[r].size(); }
-      else if (ch == 'r') { mod = "r"; } else if (ch == 'R') { mod = "R"; }
-      else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
+      else if (ch == 'r') { mod = "r"; }
+      else if (ch == 'R') { mod = "R"; }
+      else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; c = 0; }
       else if (ch =='p' and bf.size()) { for (int i = 0; i < bf.size(); i++) {
       b.insert(b.begin() + r+i+1, bf[i]); } r += bf.size(); }
       else if (ch == 'y' || ch == 'd') {
@@ -64,8 +65,7 @@ int main(int argc, char **argv) {
             char c = b[row][col]; if (c) cont += c;
           } cont += "\n"; } ofs << cont; ofs.close();
         msg = to_string(b.size()) + " line(s) written to " + "\"" + src + "\""; 
-      } else {
-        switch (ch) {
+      } else { switch (ch) {
           case '#': c = 0; break;
           case '$': c = b[r].size(); break;
           case 'x': if (b[r].size()) b[r].erase(b[r].begin() + c); break;
@@ -77,22 +77,22 @@ int main(int argc, char **argv) {
       } continue;
     } else if (mod == "i") {
       indent = cnt.length() ? times : 0;
-      if (ch == '\n') {
-        vector<int> right(b[r].size() - c); vector<int> left(c);
+      if (ch == '\n') { vector<int> right(b[r].size() - c); vector<int> left(c);
         copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
         copy(b[r].begin(), b[r].begin() + c, left.begin()); b[r].clear();
         b[r] = left; r++; c = 0; b.insert(b.begin() + r, right); left.clear(); right.clear();
         for (int i = 0; i < indent; i++) { b[r].insert(b[r].begin() + c, 32); c += 1; }
       } else if (ch == KEY_BACKSPACE || ch == '\b' || ch == 127) {
-        if (c) { c--; b[r].erase(b[r].begin() + c); }
-        else if (r) {
-          vector<int> right(b[r].size() - c); vector<int> left(c);
+        if (c) { c--; for (int i = 0; i < (cnt.length() ? times : 1); i++) {
+          if (r+i < b.size()) { b[r+i].erase(b[r+i].begin() + c); }}}
+        else if (r) { vector<int> right(b[r].size() - c); vector<int> left(c);
           copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
           copy(b[r].begin(), b[r].begin() + c, left.begin()); b.erase(b.begin() + r);
           r--; c = b[r].size(); b[r].insert(b[r].end(), right.begin(), right.end());
           left.clear(); right.clear();
-        }
-      } else if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
+        }} else if (ch != (ch & 0x1f) && ch < 128) {
+             for (int i = 0; i < (cnt.length() ? times : 1); i++) {
+               if (r+i < b.size()) { b[r+i].insert(b[r+i].begin() + c, ch); }} c++; }
     } else if (mod == "r") { b[r][c] = ch; mod = "n"; } else if (mod == "R")
     if (ch != (ch & 0x1f) && ch < 128 && c < b[r].size()) { b[r][c] = ch; c++; }
     if (ch == KEY_RESIZE) { getmaxyx(stdscr, R, C); R--; r = c = 0; refresh(); }
