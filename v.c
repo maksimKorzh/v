@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     clrtoeol(); curs_set(0); move(r - y, c - x); curs_set(1); refresh();
     int ch = -1; while (ch == -1) ch = getch(); string modes = "irR";
     if (isdigit(ch) && !(modes.find(mod[0]) != string::npos)) cnt += ch;
-    if (ch == ('[' & 0x1f)) { if (mod == "i" && c) c--; mod = 'n'; cnt = ""; continue; }
+    if (ch == ('[' & 0x1f)) { if (mod[0] != string::npos && c) c--; mod = 'n'; cnt = ""; continue; }
     int times = atoi(cnt.c_str()); if (mod == "n") {
       if (ch == 'i') { mod = "i"; continue; }
       else if (ch == 'a') { mod = "i"; c++; }
@@ -74,8 +74,8 @@ int main(int argc, char **argv) {
           left.clear(); right.clear();
         }
       } else if (ch != (ch & 0x1f) && ch < 128) { b[r].insert(b[r].begin() + c, ch); c++; }
-    } else if (mod == "r") { b[r][c] = ch; mod = "n"; }
-    
+    } else if (mod == "r") { b[r][c] = ch; mod = "n"; } else if (mod == "R")
+    if (ch != (ch & 0x1f) && ch < 128 && c < b[r].size()) { b[r][c] = ch; c++; }
     if (ch == KEY_RESIZE) { getmaxyx(stdscr, R, C); R--; r = c = 0; refresh(); }
   }
   endwin();
