@@ -7,7 +7,7 @@
 using namespace std;
 int R, C, r, c, y, x, com, indent;
 string src = "noname.txt", stat = "", msg = "", mod = "n", cnt = "";
-vector<vector<int>> b = {};
+vector<vector<int>> b = {}, bf = {};
 int main(int argc, char **argv) {
   initscr(); nodelay(stdscr, TRUE); noecho(); raw(); 
   getmaxyx(stdscr, R, C); R--; vector<int> row;
@@ -44,7 +44,15 @@ int main(int argc, char **argv) {
       else if (ch == 'r') { mod = "r"; }
       else if (ch == 'R') { mod = "R"; }
       else if (ch == 'G') { r = (times-1 <= b.size()-1 ? times-1 : b.size() - 1); cnt = ""; }
-      else if (ch == ' ' || ch == 127) {
+      else if (ch =='p' and bf.size()) { for (int i = 0; i < bf.size(); i++) {
+      b.insert(b.begin() + r+i+1, bf[i]); } r += bf.size(); }
+      else if (ch == 'y' || ch == 'd') {
+        bf.clear(); for (int i = 0; i < (cnt.length() ? times : 1); i++) {
+          if (r+i < b.size()) { vector<int> row; for (int j = 0; j < b[r+i].size(); j++) {
+          row.insert(row.begin() + j, b[r+i][j]); } bf.push_back(row);
+          }
+        }
+      } else if (ch == ' ' || ch == 127) {
         for (int i = 0; i < (cnt.length() ? times : 1); i++) {
           if (r+i < b.size()) { if (ch == ' ' && c < b[r+i].size()) b[r+i].insert(b[r+i].begin() + c, 32);
           else if (ch == 127 && c && c < b[r+i].size()) b[r+i].erase(b[r+i].begin() + c-1); }}
