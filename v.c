@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 using namespace std;
-int R, C, r, c, y, x, com;
+int R, C, r, c, y, x, com, indent;
 string src = "noname.txt", stat = "", msg = "", mod = "n", cnt = "";
 vector<vector<int>> b = {};
 int main(int argc, char **argv) {
@@ -37,8 +37,8 @@ int main(int argc, char **argv) {
     if (ch == ('[' & 0x1f)) { if (c) c--; mod = 'n'; cnt = ""; continue; }
     int times = atoi(cnt.c_str()); if (mod == "n") {
            if (ch == 'i') { mod = "i"; continue; }
-      else if (ch == 'o') { vector<int> row; b.insert(b.begin() + r+1, row); r++; mod = "i"; }
-      else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); mod = "i"; }
+      else if (ch == 'o') { vector<int> row; b.insert(b.begin() + r+1, row); r++; c = indent; mod = "i"; }
+      else if (ch == 'O') { vector<int> row; b.insert(b.begin() + r, row); c = indent; mod = "i"; }
       else if (ch == 'a') { mod = "i"; c++; }
       else if (ch == 'A') { mod = "i"; c = b[r].size(); }
       else if (ch == 'r') { mod = "r"; }
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
         vector<int> right(b[r].size() - c); vector<int> left(c);
         copy(b[r].begin() + c, b[r].begin() + b[r].size(), right.begin());
         copy(b[r].begin(), b[r].begin() + c, left.begin()); b[r].clear();
-        b[r] = left; r++; c = 0; b.insert(b.begin() + r, right); left.clear(); right.clear();
+        b[r] = left; r++; c = indent; b.insert(b.begin() + r, right); left.clear(); right.clear();
       } else if (ch == KEY_BACKSPACE || ch == '\b' || ch == 127) {
         if (c) { c--; b[r].erase(b[r].begin() + c); }
         else if (r) {
