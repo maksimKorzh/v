@@ -97,9 +97,5 @@ int main(int argc, char **argv) {
     } else if (mod == "r") { b[r][c] = ch; mod = "n"; } else if (mod == "R")
     if (ch != (ch & 0x1f) && ch < 128 && c < b[r].size()) { b[r][c] = ch; c++; }
     if (ch == KEY_RESIZE) { getmaxyx(stdscr, R, C); R--; r = c = 0; refresh(); }
-  }
-  endwin();
-  b.clear();
-  int clear = system("clear");
-  return 0;
+  } endwin(); b.clear(); bf.clear(); int clear = system("clear"); return 0;
 }
